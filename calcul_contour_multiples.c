@@ -103,31 +103,33 @@ void ajouter_element_liste_contour( liste_contour *L, Contour C){
 }
 
 void calcul_contour_mult(Image I, Robot *R, liste_contour *L,int *compte){
-    Contour *C=(Contour*)malloc(sizeof(Contour));
+    
     Image M = masque(I, compte);
+
 
     while ((*compte) > 0)
     {
-        position_initiale(M,R);
+        Contour *C=(Contour*)malloc(sizeof(Contour));
+        C->taille = 0;
+        position_initiale(M, R);
         contour_new(I,&M, R, C,compte);
         ajouter_element_liste_contour(L, (*C));
-        printf("L->taille :%d\n", L->taille);
+        //printf("L->taille :%d\n", L->taille);
+        free(C);
         // printf("%d\n", (*compte));
     }
+    printf("L->taille :%d\n", L->taille);
 }
 
 /*tableau_contour sequence_contour_liste_vers_tableau(liste_contour L){
     tableau_contour T;
-
     T.taille = L.taille;
-
     T.tab = malloc(sizeof(Contour) * T.taille);
     if (T.tab == NULL){
         fprintf(stderr, "sequence_points_liste_vers_tableau :");
         fprintf(stderr, "allocation impossible \n");
         exit(-1);
     }
-
     int k=0;
     cellule_contour *el = L.tete;
     while( el ){
@@ -150,6 +152,7 @@ void ecrire_liste_contour( liste_contour L ){
     {
         printf("i = %d\n", i);
         C = L.tete->C;
+        printf("taille c%d:%u\n", i, L.tete->C.taille);
         printf("i = %d\n", i);
         ecrire_contour(C);
         printf("i = %d\n", i);
